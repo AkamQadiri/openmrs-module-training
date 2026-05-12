@@ -1,0 +1,241 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/lesson-content.schema.json",
+  "title": "Lesson Content Schema",
+  "description": "Schema for training_lesson.content field",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "$ref": "#/definitions/contentBlock"
+  },
+  "definitions": {
+    "localizedText": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}(-[A-Z]{2})?$": {
+          "type": "string"
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": false
+    },
+    "contentBlock": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "heading",
+            "paragraph",
+            "list",
+            "alert",
+            "image",
+            "video",
+            "table"
+          ]
+        },
+        "properties": {
+          "type": "object"
+        },
+        "content": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/localizedText"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "type": { "const": "heading" } }
+          },
+          "then": {
+            "required": ["content", "properties"],
+            "properties": {
+              "properties": {
+                "type": "object",
+                "required": ["level"],
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 6,
+                    "description": "Heading level (1-6). Use level 1 for main lesson title, level 2 for major sections, level 3+ for subsections."
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "paragraph" } }
+          },
+          "then": {
+            "required": ["content"],
+            "description": "Standard paragraph block for body text. Main content delivery mechanism."
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "list" } }
+          },
+          "then": {
+            "required": ["items", "properties"],
+            "properties": {
+              "properties": {
+                "type": "object",
+                "required": ["ordered"],
+                "properties": {
+                  "ordered": {
+                    "type": "boolean",
+                    "description": "true for numbered lists (sequential steps, priority order), false for bullet lists (non-sequential items)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "alert" } }
+          },
+          "then": {
+            "required": ["content", "properties"],
+            "properties": {
+              "properties": {
+                "type": "object",
+                "required": ["variant"],
+                "properties": {
+                  "variant": {
+                    "oneOf": [
+                      {
+                        "const": "info",
+                        "title": "Info Alert (Blue)",
+                        "description": "Use for general information, helpful tips, navigation guidance, and contextual knowledge. This is the most common alert type. Examples: explaining how features work, providing navigation tips, offering general reminders. Tone: neutral and informative."
+                      },
+                      {
+                        "const": "success",
+                        "title": "Success Alert (Green)",
+                        "description": "Use for best practices, positive outcomes, encouragement, and value propositions. Examples: highlighting recommended approaches, showing benefits, celebrating progress, encouraging good patterns. Tone: positive and encouraging."
+                      },
+                      {
+                        "const": "warning",
+                        "title": "Warning Alert (Yellow/Orange)",
+                        "description": "Use for important cautions, potential mistakes, data integrity concerns, and preventable errors. Examples: warning about data integrity issues, highlighting rules to follow, cautioning about common mistakes. Tone: cautious and serious but not alarming."
+                      },
+                      {
+                        "const": "error",
+                        "title": "Error Alert (Red)",
+                        "description": "Use ONLY for critical mistakes, irreversible actions, data corruption risks, and system-breaking operations. This should be the rarest alert type. Examples: warning about actions that corrupt databases, explaining irreversible mistakes, highlighting critical safety rules. Tone: urgent and very serious. Use sparingly to maintain impact."
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "image" } }
+          },
+          "then": {
+            "required": ["properties"],
+            "properties": {
+              "properties": {
+                "type": "object",
+                "properties": {
+                  "uuid": {
+                    "type": "string",
+                    "description": "UUID reference to an image stored in the OpenMRS system"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "External URL to image."
+                  },
+                  "alt": {
+                    "$ref": "#/definitions/localizedText",
+                    "description": "Alt text for accessibility. Describe the image content for screen readers."
+                  },
+                  "caption": {
+                    "$ref": "#/definitions/localizedText",
+                    "description": "Caption displayed below the image. Use format 'Figure N: Description'."
+                  }
+                },
+                "oneOf": [{ "required": ["uuid"] }, { "required": ["url"] }]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "video" } }
+          },
+          "then": {
+            "required": ["properties"],
+            "properties": {
+              "properties": {
+                "type": "object",
+                "required": ["url"],
+                "properties": {
+                  "uuid": {
+                    "type": "string",
+                    "description": "UUID reference to a video stored in the OpenMRS system."
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL to video file"
+                  },
+                  "caption": {
+                    "$ref": "#/definitions/localizedText",
+                    "description": "Caption displayed below the video."
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "type": { "const": "table" } }
+          },
+          "then": {
+            "required": ["properties"],
+            "properties": {
+              "properties": {
+                "type": "object",
+                "required": ["headers", "rows"],
+                "properties": {
+                  "headers": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/localizedText" },
+                    "description": "Column headers for the table"
+                  },
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": { "$ref": "#/definitions/localizedText" }
+                    },
+                    "description": "Table rows, each containing cells matching the number of headers"
+                  },
+                  "caption": {
+                    "$ref": "#/definitions/localizedText",
+                    "description": "Caption displayed below the table. Use format 'Table N: Description'."
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

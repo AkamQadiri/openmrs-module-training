@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-attempt-response-multiple-choice.schema.json",
+  "title": "Multiple Choice Response",
+  "type": "object",
+  "required": ["selectedOption"],
+  "properties": {
+    "selectedOption": {
+      "type": "string",
+      "pattern": "^[a-z]$",
+      "description": "Selected option ID (a, b, c, etc.)"
+    }
+  },
+  "additionalProperties": false
+}

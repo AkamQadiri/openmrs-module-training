@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-attempt-response-matching.schema.json",
+  "title": "Matching Response",
+  "type": "object",
+  "patternProperties": {
+    "^[1-9][0-9]*$": {
+      "type": "string",
+      "pattern": "^[a-z]$",
+      "description": "Matched option for item with given ID"
+    }
+  },
+  "additionalProperties": false,
+  "minProperties": 1
+}

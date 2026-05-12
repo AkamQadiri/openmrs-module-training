@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+	<!-- Courses Table -->
+	<changeSet id="training-20250517-0001" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_course" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_course table</comment>
+		<createTable tableName="training_course">
+			<column name="course_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="estimated_minutes" type="int" />
+			<column name="version" type="int" defaultValueNumeric="1" />
+			<column name="published" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="retired" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="retired_by" type="int" />
+			<column name="date_retired" type="datetime" />
+			<column name="retire_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="course_creator_fk"
+			baseTableName="training_course" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="course_changed_by_fk"
+			baseTableName="training_course" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="course_retired_by_fk"
+			baseTableName="training_course" baseColumnNames="retired_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+	</changeSet>
+
+	<!-- Course Names Table -->
+	<changeSet id="training-20250517-0002" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_course_name" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_course_name table</comment>
+		<createTable tableName="training_course_name">
+			<column name="course_name_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="course_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="course_name_course_fk"
+			baseTableName="training_course_name" baseColumnNames="course_id"
+			referencedTableName="training_course" referencedColumnNames="course_id" />
+		<addForeignKeyConstraint constraintName="course_name_creator_fk"
+			baseTableName="training_course_name" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="course_name_changed_by_fk"
+			baseTableName="training_course_name" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="course_name_voided_by_fk"
+			baseTableName="training_course_name" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_course_name" indexName="idx_course_name_locale">
+			<column name="course_id" />
+			<column name="locale" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Course Description Table -->
+	<changeSet id="training-20250517-0003" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_course_description" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_course_description table</comment>
+		<createTable tableName="training_course_description">
+			<column name="course_description_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="course_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="varchar(1024)">
+				<constraints nullable="false" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="course_description_course_fk"
+			baseTableName="training_course_description" baseColumnNames="course_id"
+			referencedTableName="training_course" referencedColumnNames="course_id" />
+		<addForeignKeyConstraint constraintName="course_description_creator_fk"
+			baseTableName="training_course_description" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="course_description_changed_by_fk"
+			baseTableName="training_course_description" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="course_description_voided_by_fk"
+			baseTableName="training_course_description" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_course_description"
+			indexName="idx_course_description_locale">
+			<column name="course_id" />
+			<column name="locale" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Lessons Table -->
+	<changeSet id="training-20250517-0004" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_lesson" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_lesson table</comment>
+		<createTable tableName="training_lesson">
+			<column name="lesson_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="content" type="text">
+				<constraints nullable="false" />
+			</column>
+			<column name="estimated_minutes" type="int" />
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="retired" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="retired_by" type="int" />
+			<column name="date_retired" type="datetime" />
+			<column name="retire_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="lesson_creator_fk"
+			baseTableName="training_lesson" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="lesson_changed_by_fk"
+			baseTableName="training_lesson" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="lesson_retired_by_fk"
+			baseTableName="training_lesson" baseColumnNames="retired_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+	</changeSet>
+
+	<!-- Lesson Names Table -->
+	<changeSet id="training-20250517-0005" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_lesson_name" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_lesson_name table</comment>
+		<createTable tableName="training_lesson_name">
+			<column name="lesson_name_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="lesson_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="lesson_name_lesson_fk"
+			baseTableName="training_lesson_name" baseColumnNames="lesson_id"
+			referencedTableName="training_lesson" referencedColumnNames="lesson_id" />
+		<addForeignKeyConstraint constraintName="lesson_name_creator_fk"
+			baseTableName="training_lesson_name" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="lesson_name_changed_by_fk"
+			baseTableName="training_lesson_name" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="lesson_name_voided_by_fk"
+			baseTableName="training_lesson_name" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_lesson_name" indexName="idx_lesson_name_locale">
+			<column name="lesson_id" />
+			<column name="locale" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Lesson Description Table -->
+	<changeSet id="training-20250517-0006" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_lesson_description" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_lesson_description table</comment>
+		<createTable tableName="training_lesson_description">
+			<column name="lesson_description_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="lesson_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="varchar(1024)">
+				<constraints nullable="false" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="lesson_description_lesson_fk"
+			baseTableName="training_lesson_description" baseColumnNames="lesson_id"
+			referencedTableName="training_lesson" referencedColumnNames="lesson_id" />
+		<addForeignKeyConstraint constraintName="lesson_description_creator_fk"
+			baseTableName="training_lesson_description" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="lesson_description_changed_by_fk"
+			baseTableName="training_lesson_description" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="lesson_description_voided_by_fk"
+			baseTableName="training_lesson_description" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_lesson_description"
+			indexName="idx_lesson_description_locale">
+			<column name="lesson_id" />
+			<column name="locale" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Exercises Table -->
+	<changeSet id="training-20250517-0007" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_exercise" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_exercise table</comment>
+		<createTable tableName="training_exercise">
+			<column name="exercise_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="exercise_type" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="content" type="text">
+				<constraints nullable="false" />
+			</column>
+			<column name="validation" type="text" />
+			<column name="feedback" type="text" />
+			<column name="allow_retry" type="boolean" defaultValueBoolean="true">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="retired" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="retired_by" type="int" />
+			<column name="date_retired" type="datetime" />
+			<column name="retire_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="exercise_creator_fk"
+			baseTableName="training_exercise" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="exercise_changed_by_fk"
+			baseTableName="training_exercise" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="exercise_retired_by_fk"
+			baseTableName="training_exercise" baseColumnNames="retired_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+	</changeSet>
+
+	<!-- Exercise Names Table -->
+	<changeSet id="training-20250517-0008" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_exercise_name" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_exercise_name table</comment>
+		<createTable tableName="training_exercise_name">
+			<column name="exercise_name_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="exercise_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="exercise_name_exercise_fk"
+			baseTableName="training_exercise_name" baseColumnNames="exercise_id"
+			referencedTableName="training_exercise" referencedColumnNames="exercise_id" />
+		<addForeignKeyConstraint constraintName="exercise_name_creator_fk"
+			baseTableName="training_exercise_name" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="exercise_name_changed_by_fk"
+			baseTableName="training_exercise_name" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="exercise_name_voided_by_fk"
+			baseTableName="training_exercise_name" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_exercise_name" indexName="idx_exercise_name_locale">
+			<column name="exercise_id" />
+			<column name="locale" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Course Module Table -->
+	<changeSet id="training-20250517-0009" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_course_module" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_course_module table</comment>
+		<createTable tableName="training_course_module">
+			<column name="course_module_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="course_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="module_type" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="lesson_id" type="int" />
+			<column name="exercise_id" type="int" />
+			<column name="sort_weight" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="required" type="boolean" defaultValueBoolean="true">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="module_course_fk"
+			baseTableName="training_course_module" baseColumnNames="course_id"
+			referencedTableName="training_course" referencedColumnNames="course_id" />
+		<addForeignKeyConstraint constraintName="module_lesson_fk"
+			baseTableName="training_course_module" baseColumnNames="lesson_id"
+			referencedTableName="training_lesson" referencedColumnNames="lesson_id" />
+		<addForeignKeyConstraint constraintName="module_exercise_fk"
+			baseTableName="training_course_module" baseColumnNames="exercise_id"
+			referencedTableName="training_exercise" referencedColumnNames="exercise_id" />
+		<addForeignKeyConstraint constraintName="module_creator_fk"
+			baseTableName="training_course_module" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="module_changed_by_fk"
+			baseTableName="training_course_module" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="module_voided_by_fk"
+			baseTableName="training_course_module" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_course_module" indexName="idx_module_course_sort_weight">
+			<column name="course_id" />
+			<column name="sort_weight" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Course Enrollment Table -->
+	<changeSet id="training-20250517-0010" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_course_enrollment" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_course_enrollment table</comment>
+		<createTable tableName="training_course_enrollment">
+			<column name="enrollment_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="user_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="course_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_accessed_module_id" type="int" />
+			<column name="enrolled_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="completed_at" type="datetime" />
+			<column name="progress_percentage" type="int" defaultValueNumeric="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="last_accessed_at" type="datetime" />
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="enrollment_user_fk"
+			baseTableName="training_course_enrollment" baseColumnNames="user_id"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="enrollment_course_fk"
+			baseTableName="training_course_enrollment" baseColumnNames="course_id"
+			referencedTableName="training_course" referencedColumnNames="course_id" />
+		<addForeignKeyConstraint constraintName="enrollment_last_module_fk"
+			baseTableName="training_course_enrollment" baseColumnNames="last_accessed_module_id"
+			referencedTableName="training_course_module" referencedColumnNames="course_module_id" />
+		<addForeignKeyConstraint constraintName="enrollment_creator_fk"
+			baseTableName="training_course_enrollment" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="enrollment_changed_by_fk"
+			baseTableName="training_course_enrollment" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="enrollment_voided_by_fk"
+			baseTableName="training_course_enrollment" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_course_enrollment" indexName="idx_enrollment_user_course">
+			<column name="user_id" />
+			<column name="course_id" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Module Progress Table -->
+	<changeSet id="training-20250517-0011" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_module_progress" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_module_progress table</comment>
+		<createTable tableName="training_module_progress">
+			<column name="module_progress_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="enrollment_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="course_module_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="completed" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="started_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="completed_at" type="datetime" />
+			<column name="time_spent_seconds" type="bigint" />
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="module_progress_enrollment_fk"
+			baseTableName="training_module_progress" baseColumnNames="enrollment_id"
+			referencedTableName="training_course_enrollment" referencedColumnNames="enrollment_id" />
+		<addForeignKeyConstraint constraintName="module_progress_course_module_fk"
+			baseTableName="training_module_progress" baseColumnNames="course_module_id"
+			referencedTableName="training_course_module" referencedColumnNames="course_module_id" />
+		<addForeignKeyConstraint constraintName="module_progress_creator_fk"
+			baseTableName="training_module_progress" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="module_progress_changed_by_fk"
+			baseTableName="training_module_progress" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="module_progress_voided_by_fk"
+			baseTableName="training_module_progress" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_module_progress"
+			indexName="idx_module_progress_enrollment_module"
+			unique="true">
+			<column name="enrollment_id" />
+			<column name="course_module_id" />
+			<column name="voided" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Exercise Attempt Table -->
+	<changeSet id="training-20250517-0012" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_exercise_attempt" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_exercise_attempt table</comment>
+		<createTable tableName="training_exercise_attempt">
+			<column name="exercise_attempt_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="user_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="exercise_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="enrollment_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="attempt_number" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="response" type="text" />
+			<column name="correct" type="boolean" />
+			<column name="started_at" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="completed_at" type="datetime" />
+			<column name="time_spent_seconds" type="bigint" />
+			<column name="status" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="attempt_user_fk"
+			baseTableName="training_exercise_attempt" baseColumnNames="user_id"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="attempt_exercise_fk"
+			baseTableName="training_exercise_attempt" baseColumnNames="exercise_id"
+			referencedTableName="training_exercise" referencedColumnNames="exercise_id" />
+		<addForeignKeyConstraint constraintName="attempt_enrollment_fk"
+			baseTableName="training_exercise_attempt" baseColumnNames="enrollment_id"
+			referencedTableName="training_course_enrollment" referencedColumnNames="enrollment_id" />
+		<addForeignKeyConstraint constraintName="attempt_creator_fk"
+			baseTableName="training_exercise_attempt" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="attempt_changed_by_fk"
+			baseTableName="training_exercise_attempt" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="attempt_voided_by_fk"
+			baseTableName="training_exercise_attempt" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_exercise_attempt" indexName="idx_attempt_user_exercise">
+			<column name="user_id" />
+			<column name="exercise_id" />
+			<column name="enrollment_id" />
+		</createIndex>
+	</changeSet>
+
+	<!-- Course Feedback Table -->
+	<changeSet id="training-20250517-0013" author="Akam Qadiri">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="training_course_feedback" />
+			</not>
+		</preConditions>
+		<comment>Creating the training_course_feedback table</comment>
+		<createTable tableName="training_course_feedback">
+			<column name="feedback_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="enrollment_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="clarity_rating" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="difficulty_rating" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="usefulness_rating" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="overall_rating" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="comment" type="text" />
+			<column name="creator" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="date_created" type="datetime">
+				<constraints nullable="false" />
+			</column>
+			<column name="changed_by" type="int" />
+			<column name="date_changed" type="datetime" />
+			<column name="voided" type="boolean" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+			<column name="voided_by" type="int" />
+			<column name="date_voided" type="datetime" />
+			<column name="void_reason" type="varchar(255)" />
+		</createTable>
+		<addForeignKeyConstraint constraintName="feedback_enrollment_fk"
+			baseTableName="training_course_feedback" baseColumnNames="enrollment_id"
+			referencedTableName="training_course_enrollment" referencedColumnNames="enrollment_id" />
+		<addForeignKeyConstraint constraintName="feedback_creator_fk"
+			baseTableName="training_course_feedback" baseColumnNames="creator"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="feedback_changed_by_fk"
+			baseTableName="training_course_feedback" baseColumnNames="changed_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="feedback_voided_by_fk"
+			baseTableName="training_course_feedback" baseColumnNames="voided_by"
+			referencedTableName="users" referencedColumnNames="user_id" />
+		<createIndex tableName="training_course_feedback" indexName="idx_feedback_enrollment"
+			unique="true">
+			<column name="enrollment_id" />
+			<column name="voided" />
+		</createIndex>
+	</changeSet>
+
+</databaseChangeLog>

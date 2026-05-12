@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-content-form-creation.schema.json",
+  "title": "Form Creation Exercise Content",
+  "type": "object",
+  "required": ["requirements"],
+  "properties": {
+    "instructions": {
+      "$ref": "#/definitions/localizedText",
+      "description": "Detailed step-by-step instructions"
+    },
+    "requirements": {
+      "type": "object",
+      "required": ["name", "description", "version", "encounterType", "pages"],
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "description": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "version": {
+          "type": "string"
+        },
+        "encounterType": {
+          "type": "string"
+        },
+        "published": {
+          "type": "boolean"
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/page"
+          }
+        }
+      }
+    },
+    "hint": {
+      "$ref": "#/definitions/localizedText"
+    }
+  },
+  "definitions": {
+    "localizedText": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}(-[A-Z]{2})?$": {
+          "type": "string"
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "required": ["label", "sections"],
+      "properties": {
+        "label": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/section"
+          }
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": ["label", "questions"],
+      "properties": {
+        "label": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "isExpanded": {
+          "type": "boolean"
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/question"
+          }
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": ["id", "label", "type", "questionOptions"],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "label": {
+          "$ref": "#/definitions/localizedText"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string"
+        },
+        "questionOptions": {
+          "$ref": "#/definitions/questionOptions"
+        }
+      }
+    },
+    "questionOptions": {
+      "type": "object",
+      "required": ["rendering", "concept", "min", "max"],
+      "properties": {
+        "rendering": {
+          "type": "string"
+        },
+        "concept": {
+          "type": "object",
+          "required": ["id", "name"],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "$ref": "#/definitions/localizedText"
+            }
+          }
+        },
+        "min": {
+          "type": "string"
+        },
+        "max": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

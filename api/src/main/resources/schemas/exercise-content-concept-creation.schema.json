@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-content-concept-creation.schema.json",
+  "title": "Concept Creation Exercise Content",
+  "type": "object",
+  "required": ["requirements"],
+  "properties": {
+    "instructions": {
+      "$ref": "#/definitions/localizedText",
+      "description": "Detailed step-by-step instructions"
+    },
+    "requirements": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "object",
+          "properties": {
+            "primary": { "$ref": "#/definitions/localizedText" },
+            "synonyms": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/localizedText" }
+            },
+            "searchTerms": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/localizedText" }
+            },
+            "shortName": { "$ref": "#/definitions/localizedText" }
+          }
+        },
+        "description": { "$ref": "#/definitions/localizedText" },
+        "class": {
+          "type": "string"
+        },
+        "isSet": { "type": "boolean" },
+        "setMembers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "conceptName": { "$ref": "#/definitions/localizedText" }
+            }
+          },
+          "datatype": {
+            "type": "string",
+            "enum": [
+              "Numeric",
+              "Coded",
+              "Text",
+              "N/A",
+              "Document",
+              "Date",
+              "Time",
+              "Datetime",
+              "Boolean",
+              "Rule",
+              "Structured Numeric",
+              "Complex"
+            ]
+          }
+        },
+        "numericProperties": {
+          "type": "object",
+          "properties": {
+            "hiAbsolute": { "type": "number" },
+            "hiCritical": { "type": "number" },
+            "hiNormal": { "type": "number" },
+            "lowAbsolute": { "type": "number" },
+            "lowCritical": { "type": "number" },
+            "lowNormal": { "type": "number" },
+            "units": { "type": "string" },
+            "allowDecimal": { "type": "boolean" },
+            "displayPrecision": { "type": "integer" }
+          }
+        },
+        "codedProperties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "conceptName": { "$ref": "#/definitions/localizedText" }
+            }
+          }
+        },
+        "mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["relationship", "source", "code"],
+            "properties": {
+              "relationship": {
+                "type": "string",
+                "enum": [
+                  "SAME-AS",
+                  "NARROWER-THAN",
+                  "BROADER-THAN",
+                  "Associated finding",
+                  "Associated morphology",
+                  "Associated procedure",
+                  "Associated with",
+                  "Causative agent",
+                  "Finding site",
+                  "Has specimen",
+                  "Laterality",
+                  "Severity"
+                ]
+              },
+              "source": {
+                "type": "string",
+                "description": "Concept source name (e.g., ICD-10, SNOMED CT)"
+              },
+              "code": {
+                "type": "string",
+                "description": "Code in the source system"
+              }
+            }
+          }
+        },
+        "version": { "type": "string" }
+      }
+    },
+    "hint": {
+      "$ref": "#/definitions/localizedText"
+    }
+  },
+  "definitions": {
+    "localizedText": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}(-[A-Z]{2})?$": { "type": "string" }
+      },
+      "required": ["en"],
+      "additionalProperties": false
+    }
+  }
+}

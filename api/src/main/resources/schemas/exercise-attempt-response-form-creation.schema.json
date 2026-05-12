@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-attempt-response-form-creation.schema.json",
+  "title": "Form Creation Response",
+  "type": "object",
+  "required": ["formUuid"],
+  "properties": {
+    "formUuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "description": "UUID of the created form"
+    }
+  },
+  "additionalProperties": false
+}

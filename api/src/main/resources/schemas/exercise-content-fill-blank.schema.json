@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-content-fill-blank.schema.json",
+  "title": "Fill in the Blank Exercise Content",
+  "type": "object",
+  "required": ["text", "options"],
+  "properties": {
+    "instructions": {
+      "$ref": "#/definitions/localizedText"
+    },
+    "text": {
+      "$ref": "#/definitions/localizedText"
+    },
+    "options": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/localizedText"
+      }
+    },
+    "hint": {
+      "$ref": "#/definitions/localizedText"
+    }
+  },
+  "definitions": {
+    "localizedText": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}(-[A-Z]{2})?$": {
+          "type": "string"
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": false
+    }
+  }
+}

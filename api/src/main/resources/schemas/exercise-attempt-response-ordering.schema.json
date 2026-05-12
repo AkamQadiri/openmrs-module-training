@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-attempt-response-ordering.schema.json",
+  "title": "Ordering Response",
+  "type": "object",
+  "required": ["order"],
+  "properties": {
+    "order": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[1-9][0-9]*$"
+      },
+      "minItems": 2,
+      "uniqueItems": true,
+      "description": "Ordered array of item IDs"
+    }
+  },
+  "additionalProperties": false
+}

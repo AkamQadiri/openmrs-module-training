@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module configVersion="1.2">
+
+	<!-- Base Module Properties -->
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>org.openmrs.module.training</package>
+	<author>Akam Qadiri</author>
+	<description>
+		${project.parent.description}
+	</description>
+
+	<activator>org.openmrs.module.training.TrainingModuleActivator</activator>
+
+	<require_version>${openmrsPlatformVersion}</require_version>
+
+	<require_modules>
+		<require_module version="2.32.0">
+			org.openmrs.module.webservices.rest
+		</require_module>
+	</require_modules>
+
+	<!-- Required Privileges -->
+	<privilege>
+		<name>Training - Participate</name>
+		<description>Allows user to enroll in training courses, complete exercises, submit attempts,
+			and track progress</description>
+	</privilege>
+	<privilege>
+		<name>Training - Manage</name>
+		<description>Allows user to manage training module settings and content</description>
+	</privilege>
+	<privilege>
+		<name>Training - View Analytics</name>
+		<description>Allows user to view training analytics and reports</description>
+	</privilege>
+
+	<!-- Internationalization -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+
+</module>

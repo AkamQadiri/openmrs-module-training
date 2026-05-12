@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-attempt-response-true-false.schema.json",
+  "title": "True/False Response",
+  "type": "object",
+  "required": ["answer"],
+  "properties": {
+    "answer": {
+      "type": "boolean",
+      "description": "User's true/false answer"
+    }
+  },
+  "additionalProperties": false
+}

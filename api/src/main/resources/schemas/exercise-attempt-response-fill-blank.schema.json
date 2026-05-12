@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-attempt-response-fill-blank.schema.json",
+  "title": "Fill in the Blank Response",
+  "type": "object",
+  "patternProperties": {
+    "^[1-9][0-9]*$": {
+      "type": "string",
+      "description": "Answer for blank with given ID"
+    }
+  },
+  "additionalProperties": false,
+  "minProperties": 1
+}

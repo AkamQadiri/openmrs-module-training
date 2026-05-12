@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-content-multiple-choice.schema.json",
+  "title": "Multiple Choice Exercise Content",
+  "type": "object",
+  "required": ["question", "options"],
+  "properties": {
+    "question": {
+      "$ref": "#/definitions/localizedText"
+    },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["id", "text"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z]$"
+          },
+          "text": {
+            "$ref": "#/definitions/localizedText"
+          }
+        }
+      }
+    },
+    "hint": {
+      "$ref": "#/definitions/localizedText"
+    }
+  },
+  "definitions": {
+    "localizedText": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]{2}(-[A-Z]{2})?$": {
+          "type": "string"
+        }
+      },
+      "required": ["en"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openmrs.org/schemas/training/exercise-validation.schema.json",
+  "title": "Exercise Validation Schema",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["correctAnswer"],
+      "properties": {
+        "correctAnswer": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["correctAnswers"],
+      "properties": {
+        "correctAnswers": {
+          "type": "object",
+          "patternProperties": {
+            "^[1-9][0-9]*$": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["correctMatches"],
+      "properties": {
+        "correctMatches": {
+          "type": "object",
+          "patternProperties": {
+            "^[1-9][0-9]*$": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["correctOrder"],
+      "properties": {
+        "correctOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}
