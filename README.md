@@ -1,23 +1,23 @@
 # OpenMRS Training Module
 
-An OpenMRS module that provides a training platform, featuring interactive courses with lessons, various exercise types, progress tracking, and automated assessment.
+An OpenMRS module for building and running training courses with lessons, quiz and practical exercises, progress tracking, and automated assessment.
 
 ## Features
 
-- **Course Management**: Create and manage training courses with customizable content
+- **Course Management**: Create, publish, and retire training courses
 - **Multiple Exercise Types**:
   - Quiz exercises: Multiple choice, true/false, fill-in-blank, matching, ordering
   - Practical exercises: Concept creation, form creation with automated validation
 - **Progress Tracking**: Monitor learner enrollment, module completion, and performance
 - **Multi-language Support**: Localized content for lessons and exercises
 - **Media Support**: Upload and reference images, videos, PDFs, and audio files
-- **REST API**: Full REST API for integration with external systems
+- **REST API**: REST API covering all training resources
 - **Automated Assessment**: JSON schema-based validation for exercise submissions
 
 ## Prerequisites
 
 - Java 1.8+
-- Maven 2.x+
+- Maven 3.x+
 - OpenMRS Platform 2.7.4+
 - OpenMRS Webservices.rest Module 2.32.0+
 
@@ -69,14 +69,14 @@ The module exposes REST endpoints under `/ws/rest/v1/training/`:
 GET /ws/rest/v1/training/course?published=true
 
 # Submit exercise attempt
-POST /ws/rest/v1/training/attempt/submit
+POST /ws/rest/v1/training/attempt/{uuid}/submit
 ```
 
 ## Configuration
 
 ### Privileges
 
-The module defines three privilege levels:
+The module defines three privileges:
 
 - **Training - Participate**: Enroll in courses and submit attempts
 - **Training - Manage**: Create and manage training content
