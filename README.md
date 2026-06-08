@@ -1,6 +1,6 @@
 # OpenMRS Training Module
 
-An OpenMRS module for building and running training courses with lessons, quiz and practical exercises, progress tracking, and automated assessment.
+An OpenMRS module for building and running training courses with lessons and practical exercises, progress tracking, and automated assessment.
 
 ## Features
 
